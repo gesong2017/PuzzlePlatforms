@@ -6,12 +6,7 @@ AMovingPlatform::AMovingPlatform()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	if (HasAuthority())
-	{
-		SetMobility(EComponentMobility::Movable);
-	}
-	else
-		SetMobility(EComponentMobility::Static);
+	SetMobility(EComponentMobility::Movable);
 
 }
 
@@ -19,9 +14,12 @@ void AMovingPlatform::Tick(float deltaTime)
 {
 	Super::Tick(deltaTime);
 
-	FVector currentLocation = GetActorLocation();
-	currentLocation += FVector(50 * deltaTime, 0.0f, 0.0f);
-	SetActorLocation(currentLocation);
+	if (HasAuthority())
+	{
+		FVector currentLocation = GetActorLocation();
+		currentLocation += FVector(movingSpeed * deltaTime, 0.0f, 0.0f);
+		SetActorLocation(currentLocation);
+	}
 }
 
 
