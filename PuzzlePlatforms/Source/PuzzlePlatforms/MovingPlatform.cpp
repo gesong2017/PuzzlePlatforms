@@ -10,14 +10,39 @@ AMovingPlatform::AMovingPlatform()
 
 }
 
+void AMovingPlatform::BeginPlay()
+{
+	Super::BeginPlay();
+	if (HasAuthority())
+	{
+		SetReplicates(true);
+		SetReplicateMovement(true);
+	}
+
+	startGloabalLocation = GetActorLocation();
+	targetGlobalLocation = GetTransform().TransformPosition(targetRelativeLocation);
+
+}
+
 void AMovingPlatform::Tick(float deltaTime)
 {
 	Super::Tick(deltaTime);
 
+	// if game is running on the server
 	if (HasAuthority())
 	{
 		FVector currentLocation = GetActorLocation();
-		currentLocation += FVector(movingSpeed * deltaTime, 0.0f, 0.0f);
+		float journeyDistance = (targetGlobalLocation - startGloabalLocation).Size();
+		float travelledDistance = (currentLocation - startGloabalLocation).Size();
+		if (travelledDistance >= journeyDistance)
+		{
+			FVector swap = targetGlobalLocation;
+			targetGlobalLocation = startGloabalLocation;
+			startGloabalLocation = swap;
+		}
+
+		FVector direction = (targetGlobalLocation - startGloabalLocation).GetSafeNormal();
+		currentLocation += movingSpeed*direction*deltaTime;
 		SetActorLocation(currentLocation);
 	}
 }
