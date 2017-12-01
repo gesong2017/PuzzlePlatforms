@@ -3,9 +3,11 @@
 #include "PuzzlePlatformsGameInstance.h"
 
 #include "Engine/Engine.h"
+#include "UObject/ConstructorHelpers.h"
 
 UPuzzlePlatformsGameInstance::UPuzzlePlatformsGameInstance(const FObjectInitializer& ObjectInitializer)
 {   
+	//ConstructorHelpers::FClassFinder<>
 	// Debug Puerpose
 	UE_LOG(LogTemp, Warning, TEXT("GameInstace Constructor"));
 }
