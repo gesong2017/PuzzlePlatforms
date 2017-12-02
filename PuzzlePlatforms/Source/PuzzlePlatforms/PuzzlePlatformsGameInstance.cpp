@@ -5,6 +5,7 @@
 #include "Engine/Engine.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Blueprint/UserWidget.h"
+#include "MenuSystem/StartMenu.h"
 
 UPuzzlePlatformsGameInstance::UPuzzlePlatformsGameInstance(const FObjectInitializer& ObjectInitializer)
 {   
@@ -25,30 +26,26 @@ void UPuzzlePlatformsGameInstance::LoadMenu()
 {   
 	if (!ensure(menuClass != nullptr))
 		return;
-	UUserWidget* Menu = CreateWidget<UUserWidget>(this, menuClass);
+	Menu = CreateWidget<UStartMenu>(this, menuClass);
 	if (!ensure(Menu != nullptr))
 		return;
-	Menu->AddToViewport();
 
-	// Get the player controller first
-	APlayerController* playerController = GetFirstLocalPlayerController();
-	if (!ensure(playerController != nullptr))
-		return;
+	// Set up the menu
+	Menu->Setup();
 
-	// Choose which mode we want to use
-	FInputModeUIOnly inputModeData;
-	inputModeData.SetWidgetToFocus(Menu->TakeWidget());
-	inputModeData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
-
-	// Use player controller to set the input mode
-	playerController->SetInputMode(inputModeData);
-
-	// make mouse cursor visible
-	playerController->bShowMouseCursor = true;
+	// Link the game instace with the interface of start menu
+	Menu->SetMenuInterface(this);
 }
 
 void UPuzzlePlatformsGameInstance::Host()
-{
+{   
+	// release the main menu
+	if (Menu != nullptr)
+	{
+		Menu->Teardown();
+	}
+
+	//
 	UEngine* engine = GetEngine();
 	if (!ensure(engine != nullptr))
 		return;
