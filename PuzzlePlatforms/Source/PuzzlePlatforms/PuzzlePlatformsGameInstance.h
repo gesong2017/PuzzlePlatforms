@@ -29,7 +29,15 @@ public:
 	UFUNCTION(Exec)
 	void Join(const FString& address);
 
+	UFUNCTION(BlueprintCallable)
+	void InvokePauseMenu();
+
+	UFUNCTION(Exec)
+	void Resume();
+
 private:
 	TSubclassOf<UUserWidget> menuClass;
+	TSubclassOf<UUserWidget> pauseMenuClass;
 	class UStartMenu* Menu;
+	class UPauseMenu* PauseMenu;
 };

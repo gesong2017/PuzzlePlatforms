@@ -55,6 +55,9 @@ void UStartMenu::Teardown()
 
 	// Use player controller to set the input mode
 	playerController->SetInputMode(inputModeData);
+
+	// make mouse cursor invisible
+	playerController->bShowMouseCursor = false;
 }
 
 bool UStartMenu::Initialize()
