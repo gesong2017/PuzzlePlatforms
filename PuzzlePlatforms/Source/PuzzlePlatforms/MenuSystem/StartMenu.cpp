@@ -83,6 +83,10 @@ bool UStartMenu::Initialize()
 		return false;
 	ConfirmButton->OnClicked.AddDynamic(this, &UStartMenu::JoinServer);
 
+	if (!ensure(QuitButton != nullptr))
+		return false;
+	QuitButton->OnClicked.AddDynamic(this, &UStartMenu::QuitGame);
+
 	return true;
 }
 
@@ -124,5 +128,19 @@ void UStartMenu::JoinServer()
 			return;
 		menuInterface->Join(IPAddressField->GetText().ToString());
 	}
+}
+
+void UStartMenu::QuitGame()
+{
+	// Get the player controller from the world
+	UWorld* world = GetWorld();
+	if (!ensure(world != nullptr))
+		return;
+	APlayerController* playerController = world->GetFirstPlayerController();
+	if (!ensure(playerController != nullptr))
+		return;
+
+	// Quit Game through player controller console command function
+	playerController->ConsoleCommand("quit");
 }
 

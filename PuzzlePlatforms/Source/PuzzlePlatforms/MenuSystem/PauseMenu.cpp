@@ -69,23 +69,27 @@ bool UPauseMenu::Initialize()
 		return false;
 	ResumeButton->OnClicked.AddDynamic(this, &UPauseMenu::ResumeGame);
 
-	//if (!ensure(MainMenuButton != nullptr))
-	//	return false;
-	//MainMenuButton->OnClicked.AddDynamic(this, &UStartMenu::OpenJoinMenu);
-
-	//if (!ensure(QuitButton != nullptr))
-	//	return false;
-	//QuitButton->OnClicked.AddDynamic(this, &UStartMenu::BackToMainMenu);
+	if (!ensure(MainMenuButton != nullptr))
+		return false;
+	MainMenuButton->OnClicked.AddDynamic(this, &UPauseMenu::BackToMainMenu);
 
 	return true;
 }
 
 void UPauseMenu::ResumeGame()
 {
+	Teardown();
+}
+
+void UPauseMenu::BackToMainMenu()
+{
 	if (menuInterface != nullptr)
-	{
-		menuInterface->Resume();
+	{   
+		Teardown();
+		menuInterface->LoadMainMenu();
 	}
 }
+
+
 
 

@@ -25,5 +25,5 @@ public:
 	
 	virtual void Join(const FString& address) = 0;
 
-	virtual void Resume() = 0;
+	virtual void LoadMainMenu() = 0;
 };

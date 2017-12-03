@@ -104,13 +104,12 @@ void UPuzzlePlatformsGameInstance::InvokePauseMenu()
 	PauseMenu->SetMenuInterface(this);
 }
 
-void UPuzzlePlatformsGameInstance::Resume()
+void UPuzzlePlatformsGameInstance::LoadMainMenu()
 {
-	// release the pause menu
-	if (PauseMenu != nullptr)
-	{
-		PauseMenu->Teardown();
-	}
-}
+	APlayerController* playerController = GetFirstLocalPlayerController();
+	if (!ensure(playerController != nullptr))
+		return;
 
+	playerController->ClientTravel("/Game/MenuSystem/StartMenu", ETravelType::TRAVEL_Absolute);
+}
 

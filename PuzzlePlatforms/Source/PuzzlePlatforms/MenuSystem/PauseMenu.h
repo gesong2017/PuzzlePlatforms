@@ -32,11 +32,11 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	class UButton* MainMenuButton;
 
-	UPROPERTY(meta = (BindWidget))
-	class UButton* QuitButton;
-
 	UFUNCTION()
 	void ResumeGame();
-	
+
+	UFUNCTION()
+	void BackToMainMenu();
+
 	IMenuInterface* menuInterface;
 };
